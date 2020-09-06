@@ -4,7 +4,9 @@ SIDESync é o sincronizador desenvolvido para trazer as medições dos dispositi
 
 ## Instalação
 
-Dentro do repositório do projeto rode o comando [go build](https://golang.org/cmd/go/) para compilar os pacotes e dependências do projeto
+Dentro do repositório do projeto rode o comando [go build](https://golang.org/cmd/go/) para compilar os pacotes e dependências do projeto 
+ou se preferir [baixe este](https://github.com/ratacheski/SideSync/releases/download/v1.0.0/SideSync-v1.0.0) executável compilado
+
 
 ```bash
 go build

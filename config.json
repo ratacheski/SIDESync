@@ -1,0 +1,11 @@
+{
+    "host": "localhost",
+    "password": "postgres",
+    "user": "postgres",
+    "dbName": "sideufg_db",
+    "port": "5432",
+    "logConfig": "./logConfig.json",
+    "urlConexaoCCK": "http://200.137.220.229/cckwebservice/",
+    "intervaloSincronizacao": 30
+}
+ 

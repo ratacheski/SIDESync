@@ -1,0 +1,15 @@
+{
+  "Diretorio": "log/",
+  "NomeArquivo": "sidesync.log",
+  "TamanhoMaximo": 1,
+  "RotacionarPorPeriodo": true,
+  "PeriodoRotacionar": 24,
+  "HorarioLocal": true,
+  "NivelLog": "debug",
+  "Formato": {
+    "Formatar": true,
+    "DataHora": "2006-01-02 15:04:05.00000",
+    "DataHoraCompleto": true,
+    "Ordenar": false
+  }
+}

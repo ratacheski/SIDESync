@@ -1,4 +1,4 @@
-# SIDESync &middot; [![License](https://img.shields.io/github/license/ratacheski/SideSync.svg)](https://github.com/ratacheski/SideSync) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+# SIDESync &middot; [![License](https://img.shields.io/github/license/ratacheski/SideSync.svg)](https://github.com/ratacheski/SideSync/blob/master/LICENSE) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 SIDESync é o sincronizador desenvolvido para trazer as medições dos dispositivos CCK para o banco de dados do SIDE da UFG.
 

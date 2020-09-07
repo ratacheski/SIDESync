@@ -1,4 +1,4 @@
-# SIDESync
+# SIDESync &middot; [![License](https://img.shields.io/github/license/ratacheski/SideSync.svg)](https://github.com/ratacheski/SideSync) ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 SIDESync é o sincronizador desenvolvido para trazer as medições dos dispositivos CCK para o banco de dados do SIDE da UFG.
 
@@ -53,6 +53,3 @@ O segundo é o **logConfig.json** que define as configurações de log da aplica
 
 ## Contribuição
 Pull requests são bem vindos. Para mudanças significativas, por gentileza abra uma issue primeiramente para que possamos discutir as mudanças.
-
-## Licença
-[MIT](https://choosealicense.com/licenses/mit/)

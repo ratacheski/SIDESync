@@ -1,13 +1,15 @@
 package model
 
+import "database/sql"
+
 type MedidorEnel struct {
-	ID               string
-	UC               string
-	Nome             string
-	NumMedidor       string
-	Demanda          int
-	DemandaPonta     int
-	DemandaForaPonta int
+	ID               sql.NullString
+	UC               sql.NullString
+	Nome             sql.NullString
+	NumMedidor       sql.NullString
+	Demanda          sql.NullInt64
+	DemandaPonta     sql.NullInt64
+	DemandaForaPonta sql.NullInt64
 	Endereco         *Endereco
 }
 

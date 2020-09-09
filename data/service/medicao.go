@@ -15,36 +15,49 @@ import (
 )
 
 func SincronizaMedicoesCCK(medidor model.Medidor) {
-	medicao, err := repository.BuscaUltimaLeituraMedidorNoBanco(medidor)
+	medidorBanco, err := repository.BuscaMedidorBanco(medidor.ID)
+	if err != nil {
+		log.Error("Erro ao buscar detalhes do medidor no banco: ",err)
+		return
+	}
+	medicao, err := repository.BuscaUltimaLeituraMedidorNoBanco(medidorBanco)
 	var leituras []dto.Leitura
 	if err == sql.ErrNoRows {
-		leituras, err = listaPrimeirasLeiturasCCK(medidor)
+		leituras, err = listaPrimeirasLeiturasCCK(medidorBanco)
 		if err != nil {
 			return
 		}
 	} else if err != nil {
 		return
 	} else {
-		leituras, err = listaProximasLeiturasCCK(medicao, medidor)
+		leituras, err = listaProximasLeiturasCCK(medicao, medidorBanco)
 		if err != nil {
 			return
 		}
 	}
 	if len(leituras) > 0 {
-		err := repository.InsereMedicoes(leituras, medidor)
+		err := repository.InsereMedicoes(leituras, medidorBanco)
 		if err != nil {
-			log.Error("Erro ao inserir medições do medidor ", medidor.Denominacao, " no banco: ", err)
+			log.Error("Erro ao inserir medições do medidor ", medidorBanco.Denominacao, " no banco: ", err)
 		}
 	}
 }
 
 func listaProximasLeiturasCCK(medicao model.Medicao, medidor model.Medidor) (leituras []dto.Leitura, err error) {
 
-	if medidor.DataUltimaLeitura.Local() == medicao.DataMedicao.Local() {
+	if medidor.DataUltimaLeitura.Time == medicao.DataMedicao {
+		return
+	}
+	if medidor.UltimaDataSincronizada.Time.Add(14*time.Minute).After(medidor.DataUltimaLeitura.Time) {
 		return
 	}
 	var urlListagem = config.LoadedConfigs.URLConexaoCCK + "?id_medidor=" +
-		strconv.Itoa(medicao.Medidor.ID) + "&datahora_ini=" + utils.FormataDataHoraWebService(medicao.DataMedicao.Add(time.Minute*14))
+		strconv.Itoa(medicao.Medidor.ID) + "&datahora_ini="
+	if medidor.UltimaDataSincronizada.Time.After(medicao.DataMedicao) {
+		urlListagem += utils.FormataDataHoraWebService(medidor.UltimaDataSincronizada.Time.Add(time.Minute*14))
+	} else {
+		urlListagem += utils.FormataDataHoraWebService(medicao.DataMedicao.Add(time.Minute*14))
+	}
 	resp, err := resty.Client.R().Get(urlListagem)
 	if err != nil {
 		log.Error("Erro ao buscar Próximas Leituras Medidor CCK: ", err)
@@ -61,8 +74,16 @@ func listaProximasLeiturasCCK(medicao model.Medicao, medidor model.Medidor) (lei
 }
 
 func listaPrimeirasLeiturasCCK(medidor model.Medidor) (leituras []dto.Leitura, err error) {
+	if medidor.UltimaDataSincronizada.Time.Add(14*time.Minute).After(medidor.DataUltimaLeitura.Time) {
+		return
+	}
 	var urlListagem = config.LoadedConfigs.URLConexaoCCK + "?id_medidor=" +
-		strconv.Itoa(medidor.ID) + "&datahora_ini=" + utils.FormataDataHoraWebService(medidor.DataPrimeiraLeitura)
+		strconv.Itoa(medidor.ID) + "&datahora_ini="
+	if medidor.UltimaDataSincronizada.Time.After(medidor.DataPrimeiraLeitura.Time) {
+		urlListagem += utils.FormataDataHoraWebService(medidor.UltimaDataSincronizada.Time.Add(time.Minute*14))
+	} else {
+		urlListagem += utils.FormataDataHoraWebService(medidor.DataPrimeiraLeitura.Time.Add(time.Minute*14))
+	}
 	resp, err := resty.Client.R().Get(urlListagem)
 	if err != nil {
 		log.Error("Erro ao buscar Primeiras Leituras Medidor CCK: ", err)

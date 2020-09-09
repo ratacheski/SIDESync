@@ -87,8 +87,10 @@ func insereMedidoresNoBanco(medidores dto.Medidores) (meds []model.Medidor, err 
 			var med model.Medidor
 			med.ID = idMedidor
 			med.Denominacao = medidor.Nome
-			med.DataPrimeiraLeitura = medidor.PrimeiraLeitura.Time
-			med.DataUltimaLeitura = medidor.UltimaLeitura.Time
+			med.DataPrimeiraLeitura.Time = medidor.PrimeiraLeitura.Time
+			med.DataPrimeiraLeitura.Valid = true
+			med.DataUltimaLeitura.Time = medidor.UltimaLeitura.Time
+			med.DataUltimaLeitura.Valid = true
 			meds = append(meds, med)
 		}
 	}

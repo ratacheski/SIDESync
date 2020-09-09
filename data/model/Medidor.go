@@ -1,16 +1,19 @@
 package model
 
-import "time"
+import (
+	"database/sql"
+)
 
 type Medidor struct {
-	ID                  int
-	Denominacao         string
-	Tipo                int
-	Latitude            float64
-	Longitude           float64
-	DataPrimeiraLeitura time.Time
-	DataUltimaLeitura   time.Time
-	MedidorEnel         *MedidorEnel
+	ID                     int
+	Denominacao            string
+	Tipo                   sql.NullInt64
+	Latitude               sql.NullFloat64
+	Longitude              sql.NullFloat64
+	DataPrimeiraLeitura    sql.NullTime
+	DataUltimaLeitura      sql.NullTime
+	UltimaDataSincronizada sql.NullTime
+	MedidorEnel            *MedidorEnel
 }
 
 func (medidor *Medidor) NewParams() {
@@ -29,6 +32,7 @@ func (medidor *Medidor) GetParams() (parametros []interface{}) {
 		&medidor.Longitude,
 		&medidor.DataPrimeiraLeitura,
 		&medidor.DataUltimaLeitura,
+		&medidor.UltimaDataSincronizada,
 		&medidor.MedidorEnel.ID)
 	return
 }

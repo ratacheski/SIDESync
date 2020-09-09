@@ -17,6 +17,7 @@ func BuscaUltimaLeituraMedidorNoBanco(medidor model.Medidor) (medicao model.Medi
 }
 
 func InsereMedicoes(registros []dto.Leitura, medidor model.Medidor) (err error) {
+	ultimoRegistro := registros[len(registros)-1]
 	sql := query.InsertMedicoesPrefix
 	var vals []interface{}
 	var inserts []string
@@ -32,6 +33,11 @@ func InsereMedicoes(registros []dto.Leitura, medidor model.Medidor) (err error) 
 				medidor.ID)
 			j++
 		}
+	}
+	_, err = storage.DB.Exec(query.UpdateUltimaData, ultimoRegistro.DataHora.Time, medidor.ID)
+	if err != nil {
+		log.Error("Erro no exec: ", err)
+		return err
 	}
 	if len(inserts) > 0 {
 		sql += strings.Join(inserts, ",")
